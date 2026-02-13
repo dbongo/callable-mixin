@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.2.1](https://github.com/dbongo/callable-mixin/tree/v0.2.1) (2026-02-13)
+
+[Full Changelog](https://github.com/dbongo/callable-mixin/compare/v0.2.0...v0.2.1)
+
+**Fixed:**
+
+- Fix Ruby 2.7 keyword deprecation warning in `Callable.call` by replacing explicit `**kwargs` with `ruby2_keywords` [\#a575ba7](https://github.com/dbongo/callable-mixin/commit/a575ba7)
+
 ## [v0.2.0](https://github.com/dbongo/callable-mixin/tree/v0.2.0) (2025-06-21)
 
 [Full Changelog](https://github.com/dbongo/callable-mixin/compare/v0.1.2...v0.2.0)
