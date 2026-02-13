@@ -33,15 +33,14 @@ module Callable
     ##
     # Instantiate the class and immediately invoke its instance `#call`.
     #
-    # @param args [Array] positional arguments for `initialize`.
-    # @param kwargs [Hash] keyword arguments for `initialize`.
+    # @param args [Array] positional and keyword arguments forwarded to `initialize`
+    #   (keyword transparency provided by `ruby2_keywords`).
     # @yield [optional] block passed directly to the instance method `#call`; ignored if not yielded.
     # @return anything returned by the instance `#call`.
     # @raise [ConstructionError] if construction fails (plain `ArgumentError`).
     # @raise [NotImplementedError] if the instance does not implement `#call`.
-    def call(*args, **kwargs, &block)
-      # Ruby versions earlier than 2.7 can't reliably handle splatting empty kwargs, so branch for compatibility
-      inst = kwargs.empty? ? new(*args) : new(*args, **kwargs)
+    def call(*args, &block)
+      inst = new(*args)
     rescue ArgumentError => e
       # Bubble up anything that isn't exactly ArgumentError (e.g., subclasses)
       raise unless e.instance_of?(ArgumentError)
@@ -53,6 +52,7 @@ module Callable
       end
       inst.call(&block)
     end
+    ruby2_keywords(:call) if respond_to?(:ruby2_keywords, true)
 
     # @return [Proc] a proc that delegates to `.call`, enabling `&MyService` shorthand.
     def to_proc

@@ -204,6 +204,24 @@ RSpec.describe Callable do
         expect(ComplexCtor.call(1, c: 3)).to eq([1, 2, 3, 4, {}])
       end
     end
+
+    context "positional hash argument (Ruby 2.7 compat)" do
+      class HashReceiver
+        include Callable
+
+        def initialize(data)
+          @data = data
+        end
+
+        def call
+          @data
+        end
+      end
+
+      it "passes a hash as a positional arg without triggering kwargs conversion" do
+        expect(HashReceiver.call({a: 1, b: 2})).to eq({a: 1, b: 2})
+      end
+    end
   end
 
   # ------------------------------------------------------------------
